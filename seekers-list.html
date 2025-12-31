@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal | Job Seekers Directory</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="seekers-list.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="list-container">
+        <div class="header-section">
+            <h1>Job Seekers Directory</h1>
+            <p>Browse all registered job seekers</p>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by name, email, or skills...">
+                <i class='bx bx-search'></i>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="employers-list.html" class="nav-link">View Employers</a>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">Loading job seekers...</div>
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+        
+        <div class="seekers-grid" id="seekersGrid">
+            <!-- Seekers will be dynamically inserted here -->
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class='bx bx-search-alt-2'></i>
+            <p>No job seekers found matching your search.</p>
+        </div>
+    </div>
+
+    <script src="seekers-list.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal | Employers Directory</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="employers-list.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="list-container">
+        <div class="header-section">
+            <h1>Employers Directory</h1>
+            <p>Browse all registered companies</p>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search companies by name, email, or description...">
+                <i class='bx bx-search'></i>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="seekers-list.html" class="nav-link">View Job Seekers</a>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">Loading employers...</div>
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+        
+        <div class="employers-grid" id="employersGrid">
+            <!-- Employers will be dynamically inserted here -->
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class='bx bx-search-alt-2'></i>
+            <p>No employers found matching your search.</p>
+        </div>
+    </div>
+
+    <script src="employers-list.js"></script>
+</body>
+</html>
+
