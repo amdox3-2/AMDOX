@@ -12,26 +12,26 @@ let searchTimeout;
 
 // Security: Escape HTML to prevent XSS attacks
 function escapeHtml(text) {
-  if (!text) return '';
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Security: Sanitize URL to prevent javascript: protocol attacks
 function sanitizeUrl(url) {
-  if (!url) return '';
-  const trimmed = url.trim().toLowerCase();
-  // Allow only http://, https://, and mailto: protocols
-  if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('mailto:')) {
-    return url.trim();
-  }
-  // If no protocol, assume https://
-  if (!trimmed.includes('://')) {
-    return 'https://' + url.trim();
-  }
-  // Invalid protocol, return empty string
-  return '';
+    if (!url) return '';
+    const trimmed = url.trim().toLowerCase();
+    // Allow only http://, https://, and mailto: protocols
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('mailto:')) {
+        return url.trim();
+    }
+    // If no protocol, assume https://
+    if (!trimmed.includes('://')) {
+        return 'https://' + url.trim();
+    }
+    // Invalid protocol, return empty string
+    return '';
 }
 
 // Fetch all employers
@@ -160,4 +160,3 @@ searchInput.addEventListener('input', (e) => {
 
 // Initial load
 fetchEmployers();
-

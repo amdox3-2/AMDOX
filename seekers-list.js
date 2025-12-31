@@ -93,29 +93,48 @@ function createSeekerCard(seeker) {
   if (email) {
     const emailItem = document.createElement('div');
     emailItem.className = 'info-item';
-    emailItem.innerHTML = `<i class='bx bx-envelope'></i><span>${email}</span>`;
+    const emailIcon = document.createElement('i');
+    emailIcon.className = 'bx bx-envelope';
+    const emailSpan = document.createElement('span');
+    emailSpan.textContent = email;
+    emailItem.appendChild(emailIcon);
+    emailItem.appendChild(emailSpan);
     seekerInfo.appendChild(emailItem);
   }
 
   if (phone) {
     const phoneItem = document.createElement('div');
     phoneItem.className = 'info-item';
-    phoneItem.innerHTML = `<i class='bx bx-phone'></i><span>${phone}</span>`;
+    const phoneIcon = document.createElement('i');
+    phoneIcon.className = 'bx bx-phone';
+    const phoneSpan = document.createElement('span');
+    phoneSpan.textContent = phone;
+    phoneItem.appendChild(phoneIcon);
+    phoneItem.appendChild(phoneSpan);
     seekerInfo.appendChild(phoneItem);
   }
 
   if (address) {
     const addressItem = document.createElement('div');
     addressItem.className = 'info-item';
-    addressItem.innerHTML = `<i class='bx bx-map'></i><span>${address}</span>`;
+    const addressIcon = document.createElement('i');
+    addressIcon.className = 'bx bx-map';
+    const addressSpan = document.createElement('span');
+    addressSpan.textContent = address;
+    addressItem.appendChild(addressIcon);
+    addressItem.appendChild(addressSpan);
     seekerInfo.appendChild(addressItem);
   }
 
   if (seeker.dateOfBirth) {
     const dateItem = document.createElement('div');
     dateItem.className = 'info-item';
-    const dateStr = new Date(seeker.dateOfBirth).toLocaleDateString();
-    dateItem.innerHTML = `<i class='bx bx-calendar'></i><span>${escapeHtml(dateStr)}</span>`;
+    const dateIcon = document.createElement('i');
+    dateIcon.className = 'bx bx-calendar';
+    const dateSpan = document.createElement('span');
+    dateSpan.textContent = new Date(seeker.dateOfBirth).toLocaleDateString();
+    dateItem.appendChild(dateIcon);
+    dateItem.appendChild(dateSpan);
     seekerInfo.appendChild(dateItem);
   }
 
