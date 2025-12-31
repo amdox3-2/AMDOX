@@ -10,6 +10,14 @@ const searchInput = document.getElementById('searchInput');
 let allSeekers = [];
 let searchTimeout;
 
+// Security: Escape HTML to prevent XSS attacks
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 // Fetch all seekers
 async function fetchSeekers(searchTerm = '') {
   try {
@@ -61,53 +69,69 @@ function createSeekerCard(seeker) {
   const card = document.createElement('div');
   card.className = 'seeker-card';
 
+  // Escape all user input to prevent XSS
+  const fullName = escapeHtml(seeker.fullName || 'Name Not Provided');
+  const email = escapeHtml(seeker.email || '');
+  const phone = escapeHtml(seeker.phone || '');
+  const address = escapeHtml(seeker.address || '');
   const skills = seeker.skills 
-    ? (seeker.skills.length > 150 
+    ? escapeHtml(seeker.skills.length > 150 
         ? seeker.skills.substring(0, 150) + '...' 
         : seeker.skills)
     : 'No skills information available';
 
   const hasResume = seeker.resumeFileName && seeker.resumePath;
 
-  card.innerHTML = `
-    <h3>${seeker.fullName || 'Name Not Provided'}</h3>
-    <div class="seeker-info">
-      ${seeker.email ? `
-        <div class="info-item">
-          <i class='bx bx-envelope'></i>
-          <span>${seeker.email}</span>
-        </div>
-      ` : ''}
-      ${seeker.phone ? `
-        <div class="info-item">
-          <i class='bx bx-phone'></i>
-          <span>${seeker.phone}</span>
-        </div>
-      ` : ''}
-      ${seeker.address ? `
-        <div class="info-item">
-          <i class='bx bx-map'></i>
-          <span>${seeker.address}</span>
-        </div>
-      ` : ''}
-      ${seeker.dateOfBirth ? `
-        <div class="info-item">
-          <i class='bx bx-calendar'></i>
-          <span>${new Date(seeker.dateOfBirth).toLocaleDateString()}</span>
-        </div>
-      ` : ''}
-    </div>
-    <div class="skills">${skills}</div>
-    ${hasResume ? `
-      <span class="resume-badge">
-        <i class='bx bx-file'></i> Resume Available
-      </span>
-    ` : `
-      <span class="resume-badge no-resume">
-        <i class='bx bx-x-circle'></i> No Resume
-      </span>
-    `}
-  `;
+  // Build card using DOM methods instead of innerHTML for better security
+  const h3 = document.createElement('h3');
+  h3.textContent = fullName;
+  card.appendChild(h3);
+
+  const seekerInfo = document.createElement('div');
+  seekerInfo.className = 'seeker-info';
+
+  if (email) {
+    const emailItem = document.createElement('div');
+    emailItem.className = 'info-item';
+    emailItem.innerHTML = `<i class='bx bx-envelope'></i><span>${email}</span>`;
+    seekerInfo.appendChild(emailItem);
+  }
+
+  if (phone) {
+    const phoneItem = document.createElement('div');
+    phoneItem.className = 'info-item';
+    phoneItem.innerHTML = `<i class='bx bx-phone'></i><span>${phone}</span>`;
+    seekerInfo.appendChild(phoneItem);
+  }
+
+  if (address) {
+    const addressItem = document.createElement('div');
+    addressItem.className = 'info-item';
+    addressItem.innerHTML = `<i class='bx bx-map'></i><span>${address}</span>`;
+    seekerInfo.appendChild(addressItem);
+  }
+
+  if (seeker.dateOfBirth) {
+    const dateItem = document.createElement('div');
+    dateItem.className = 'info-item';
+    const dateStr = new Date(seeker.dateOfBirth).toLocaleDateString();
+    dateItem.innerHTML = `<i class='bx bx-calendar'></i><span>${escapeHtml(dateStr)}</span>`;
+    seekerInfo.appendChild(dateItem);
+  }
+
+  card.appendChild(seekerInfo);
+
+  const skillsDiv = document.createElement('div');
+  skillsDiv.className = 'skills';
+  skillsDiv.textContent = skills;
+  card.appendChild(skillsDiv);
+
+  const badge = document.createElement('span');
+  badge.className = hasResume ? 'resume-badge' : 'resume-badge no-resume';
+  badge.innerHTML = hasResume 
+    ? `<i class='bx bx-file'></i> Resume Available`
+    : `<i class='bx bx-x-circle'></i> No Resume`;
+  card.appendChild(badge);
 
   return card;
 }
