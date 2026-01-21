@@ -22,7 +22,7 @@ roleSelect.addEventListener('change', () => {
 
 function toggle(id, icon) {
     const input = document.getElementById(id);
-    if(input.type === "password") {
+    if (input.type === "password") {
         input.type = "text";
         icon.classList.replace('bx-hide', 'bx-show');
     } else {
@@ -32,21 +32,21 @@ function toggle(id, icon) {
 }
 
 // Handle Sign Up Form Submission
-document.querySelector('.sign-up form').addEventListener('submit', async function(e) {
+document.querySelector('.sign-up form').addEventListener('submit', async function (e) {
     e.preventDefault();
     const name = this.querySelector('input[type="text"]').value;
     const email = this.querySelector('input[type="email"]').value;
     const password = document.getElementById('regPass').value;
     const role = this.querySelector('.role-select').value;
-    
-    if(!role) {
+
+    if (!role) {
         alert('Please select a role to register.');
         return;
     }
 
     try {
         // Register user via API
-        const response = await fetch('http://localhost:3000/api/auth/register', {
+        const response = await fetch('http://127.0.0.1:3000/api/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -72,7 +72,7 @@ document.querySelector('.sign-up form').addEventListener('submit', async functio
                 formData.append('resume', resumeFile);
 
                 try {
-                    const uploadResponse = await fetch('http://localhost:3000/api/upload/resume', {
+                    const uploadResponse = await fetch('http://127.0.0.1:3000/api/upload/resume', {
                         method: 'POST',
                         body: formData
                     });
@@ -88,11 +88,7 @@ document.querySelector('.sign-up form').addEventListener('submit', async functio
         }
 
         // Redirect to appropriate profile page
-        if(role === 'employer') {
-            window.location.href = 'employer-profile.html';
-        } else {
-            window.location.href = 'seeker-profile.html';
-        }
+        window.location.href = 'dashboard.html';
     } catch (error) {
         console.error('Registration error:', error);
         alert('Registration failed. Please try again.');
@@ -100,13 +96,13 @@ document.querySelector('.sign-up form').addEventListener('submit', async functio
 });
 
 // Handle Sign In Form Submission
-document.querySelector('.sign-in form').addEventListener('submit', async function(e) {
+document.querySelector('.sign-in form').addEventListener('submit', async function (e) {
     e.preventDefault();
     const email = this.querySelector('input[type="email"]').value;
     const password = document.getElementById('logPass').value;
-    
+
     try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch('http://127.0.0.1:3000/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -125,7 +121,7 @@ document.querySelector('.sign-in form').addEventListener('submit', async functio
         sessionStorage.setItem('currentUser', JSON.stringify(result.data));
 
         // Redirect based on role
-        window.location.href = result.data.role === 'employer' ? 'employer-profile.html' : 'seeker-profile.html';
+        window.location.href = 'dashboard.html';
     } catch (error) {
         console.error('Login error:', error);
         alert('Login failed. Please try again.');

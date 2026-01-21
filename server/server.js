@@ -22,6 +22,8 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/employers', require('./routes/employers'));
 app.use('/api/seekers', require('./routes/seekers'));
 app.use('/api/upload', require('./routes/upload'));
+app.use('/api/jobs', require('./routes/jobs'));
+app.use('/api/applications', require('./routes/applications'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://127.0.0.1:3000/api';
 
 // Get current user from sessionStorage
 const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
@@ -26,7 +26,9 @@ async function loadProfile() {
       form.querySelector('input[placeholder="Enter your phone number"]').value = profile.phone || '';
       if (profile.dateOfBirth) {
         const date = new Date(profile.dateOfBirth);
-        form.querySelector('input[type="date"]').value = date.toISOString().split('T')[0];
+        if (!isNaN(date.getTime())) {
+          form.querySelector('input[type="date"]').value = date.toISOString().split('T')[0];
+        }
       }
       form.querySelector('input[placeholder="Enter your address"]').value = profile.address || '';
       form.querySelector('textarea').value = profile.skills || '';

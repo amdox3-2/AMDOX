@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMDOX | Post Job</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="seeker-profile.css"> <!-- Reusing form styles -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <a href="dashboard.html"
+                style="text-decoration: none; color: #64748b; margin-bottom: 20px; display: inline-block;">
+                <i class='bx bx-arrow-back'></i> Back to Dashboard
+            </a>
+            <h1>Post a New Job</h1>
+            <p>Tell prospective candidates about the position</p>
+        </div>
+        <form id="postJobForm">
+            <div class="input-group">
+                <label>Job Title</label>
+                <input type="text" id="jobTitle" placeholder="e.g. Senior Software Engineer" required>
+            </div>
+            <div class="input-group">
+                <label>Location</label>
+                <input type="text" id="location" placeholder="e.g. New York, NY (or Remote)" required>
+            </div>
+            <div class="input-group">
+                <label>Job Type</label>
+                <select id="jobType">
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Remote">Remote</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Salary Range</label>
+                <input type="text" id="salaryRange" placeholder="e.g. $80,000 - $120,000 per year" required>
+            </div>
+            <div class="input-group">
+                <label>Job Description</label>
+                <textarea id="description" rows="5" placeholder="Describe the role in detail..." required></textarea>
+            </div>
+            <div class="input-group">
+                <label>Qualifications</label>
+                <textarea id="qualifications" rows="4" placeholder="List required skills and education..."
+                    required></textarea>
+            </div>
+            <div class="input-group">
+                <label>Responsibilities</label>
+                <textarea id="responsibilities" rows="4" placeholder="List day-to-day tasks..." required></textarea>
+            </div>
+            <button type="submit" class="primary-btn">Publish Job Listing</button>
+        </form>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://127.0.0.1:3000/api';
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+
+        if (currentUser.role !== 'employer') {
+            window.location.href = 'dashboard.html';
+        }
+
+        document.getElementById('postJobForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const jobData = {
+                employer: currentUser.userId,
+                title: document.getElementById('jobTitle').value,
+                location: document.getElementById('location').value,
+                jobType: document.getElementById('jobType').value,
+                salaryRange: document.getElementById('salaryRange').value,
+                description: document.getElementById('description').value,
+                qualifications: document.getElementById('qualifications').value,
+                responsibilities: document.getElementById('responsibilities').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/jobs`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(jobData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Job posted successfully!');
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert('Error posting job.');
+            }
+        });
+    </script>
+</body>
+
+</html>

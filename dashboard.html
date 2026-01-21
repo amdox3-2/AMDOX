@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMDOX | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class='bx bxs-briefcase-alt-2'></i>
+                <span>AMDOX</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-tab="overview">
+                    <i class='bx bx-grid-alt'></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="nav-item employer-only" data-tab="my-jobs">
+                    <i class='bx bx-list-ul'></i>
+                    <span>My Job Listings</span>
+                </a>
+                <a href="#" class="nav-item seeker-only" data-tab="find-jobs">
+                    <i class='bx bx-search'></i>
+                    <span>Find Jobs</span>
+                </a>
+                <a href="#" class="nav-item seeker-only" data-tab="my-apps">
+                    <i class='bx bx-send'></i>
+                    <span>My Applications</span>
+                </a>
+                <a href="#" class="nav-item" id="navProfile">
+                    <i class='bx bx-user'></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" id="logoutBtn">
+                    <i class='bx bx-log-out'></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="user-welcome">
+                    <h2 id="welcomeText">Welcome back, User!</h2>
+                    <p id="roleBadge" class="badge">Job Seeker</p>
+                </div>
+                <div class="header-actions" id="employerActions" style="display: none;">
+                    <button class="primary-btn-sm" onclick="window.location.href='post-job.html'">
+                        <i class='bx bx-plus'></i> Post New Job
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Overview Tab -->
+                <section id="overviewTab" class="tab-content active">
+                    <div class="stats-grid" id="statsGrid">
+                        <!-- Stats cards will be dynamic -->
+                    </div>
+                    <div class="recent-activity">
+                        <h3 id="recentTitle">Recent Job Listings</h3>
+                        <div class="list-container" id="recentList">
+                            <!-- Items will be dynamic -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Jobs Tab (Employer) -->
+                <section id="myJobsTab" class="tab-content">
+                    <div class="section-header">
+                        <h3>Your Job Listings</h3>
+                    </div>
+                    <div class="jobs-list" id="employerJobsList"></div>
+                </section>
+
+                <!-- Find Jobs Tab (Seeker) -->
+                <section id="findJobsTab" class="tab-content">
+                    <div class="search-filters">
+                        <input type="text" id="jobSearchInput" placeholder="Search by title or keywords...">
+                        <input type="text" id="locationFilter" placeholder="Location...">
+                        <select id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Remote">Remote</option>
+                        </select>
+                    </div>
+                    <div class="jobs-grid" id="availableJobsGrid"></div>
+                </section>
+
+                <!-- My Applications Tab (Seeker) -->
+                <section id="myAppsTab" class="tab-content">
+                    <div class="section-header">
+                        <h3>Your Applications</h3>
+                    </div>
+                    <div class="apps-list" id="seekerAppsList"></div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Job Details Modal -->
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="jobModalBody"></div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
