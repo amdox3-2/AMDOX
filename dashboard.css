@@ -5,6 +5,13 @@
     --border-color: #e2e8f0;
 }
 
+body {
+    display: block;
+    height: auto;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
 .dashboard-wrapper {
     display: flex;
     min-height: 100vh;
@@ -101,6 +108,11 @@
 .user-welcome h2 {
     font-size: 1.4rem;
     color: #0f172a;
+    margin: 0;
+}
+
+.user-welcome p {
+    margin: 0;
 }
 
 .badge {
@@ -232,6 +244,36 @@
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
 }
 
+.job-main-info {
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.job-main-info h4 {
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.job-main-info p {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.salary {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 /* Modal */
 .modal {
     display: none;
@@ -269,6 +311,7 @@
     display: flex;
     gap: 15px;
     margin-bottom: 30px;
+    flex-wrap: wrap;
 }
 
 .search-filters input,
@@ -314,4 +357,53 @@
     padding: 5px 10px;
     font-size: 0.85rem;
     border-radius: 5px;
+}
+
+/* Job Details Modal Styles */
+.job-detail-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.job-detail-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.job-detail-header .company {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.job-detail-header .meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.job-detail-header .meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.job-detail-body h3 {
+    font-size: 1.1rem;
+    margin: 20px 0 10px;
+}
+
+.job-detail-body p {
+    line-height: 1.6;
+    color: #475569;
+}
+
+.job-detail-footer {
+    margin-top: 30px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
 }

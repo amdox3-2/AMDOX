@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +8,40 @@
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
+
 <body>
     <div class="auth-wrapper">
         <div class="auth-container" id="container">
             <div class="form-container sign-up">
                 <form>
                     <h1>Create Account</h1>
-                    <span>Join our global job network</span>
-                    <input type="text" placeholder="Full Name" required>
-                    <input type="email" placeholder="Email Address" required>
-                    <select class="role-select">
-                        <option value="" disabled selected>Register as...</option>
-                        <option value="seeker">Job Seeker</option>
-                        <option value="employer">Employer</option>
-                    </select>
+                    <p class="subtitle">Join our global job network</p>
+                    <div class="input-wrap">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="John Doe" required>
+                    </div>
+                    <div class="input-wrap">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="input-wrap">
+                        <label>Register as</label>
+                        <select class="role-select">
+                            <option value="" disabled selected>Select your role...</option>
+                            <option value="seeker">Job Seeker</option>
+                            <option value="employer">Employer</option>
+                        </select>
+                    </div>
                     <div class="input-wrap" id="resume-upload-wrap" style="display: none;">
                         <label>Upload Resume</label>
                         <input type="file" id="resume-upload" accept=".pdf,.doc,.docx">
                     </div>
-                    <div class="pass-field">
-                        <input type="password" placeholder="Password" id="regPass" required>
-                        <i class='bx bx-hide' onclick="toggle('regPass', this)"></i>
+                    <div class="input-wrap">
+                        <label>Password</label>
+                        <div class="pass-field">
+                            <input type="password" placeholder="••••••••" id="regPass" required>
+                            <i class='bx bx-hide' onclick="toggle('regPass', this)"></i>
+                        </div>
                     </div>
                     <button type="submit" class="primary-btn">Sign Up</button>
                 </form>
@@ -72,4 +86,5 @@
 
     <script src="index.js"></script>
 </body>
+
 </html>

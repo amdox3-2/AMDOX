@@ -137,7 +137,7 @@ body {
 
 .seeker-card .info-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     margin: 15px 0;
     color: #475569;
     font-size: 0.95rem;
