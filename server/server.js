@@ -17,6 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '..')));
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/employers', require('./routes/employers'));
