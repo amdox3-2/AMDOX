@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMDOX | Account Credentials</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="seeker-profile.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .credentials-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            color: #512da8;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; height: 100vh;">
+    <div class="credentials-card scroll-reveal visible">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <a href="seeker-profile.html" class="back-link" style="margin-bottom: 0;"><i class='bx bx-arrow-back'></i>
+                Back to Profile</a>
+            <a href="dashboard.html" class="back-link" style="margin-bottom: 0;"><i class='bx bx-grid-alt'></i>
+                Dashboard</a>
+        </div>
+        <div class="form-header">
+            <h2>Account Credentials</h2>
+            <p>Update your login name and email</p>
+        </div>
+        <form id="credentialsForm">
+            <div class="input-group">
+                <label>Account Name</label>
+                <input type="text" id="accName" placeholder="Enter name" required>
+            </div>
+            <div class="input-group">
+                <label>Login Email Address</label>
+                <input type="email" id="accEmail" placeholder="Enter email" required>
+            </div>
+            <div style="margin-top: 10px; font-size: 0.85rem; color: #64748b;">
+                <p><i class='bx bx-info-circle'></i> Changing your email will update your login credentials.</p>
+            </div>
+            <button type="submit" class="primary-btn">Update Credentials</button>
+        </form>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://127.0.0.1:3000/api';
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+
+        if (!currentUser.userId) {
+            window.location.href = 'index.html';
+        }
+
+        // Fill current info
+        document.getElementById('accName').value = currentUser.name;
+        document.getElementById('accEmail').value = currentUser.email;
+
+        document.getElementById('credentialsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('accName').value;
+            const email = document.getElementById('accEmail').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/update-profile`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: currentUser.userId,
+                        name: name,
+                        email: email
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Credentials updated successfully!');
+                    // Update sessionStorage
+                    sessionStorage.setItem('currentUser', JSON.stringify(result.data));
+                    window.location.href = 'seeker-profile.html';
+                } else {
+                    alert(result.message || 'Update failed');
+                }
+            } catch (error) {
+                console.error('Error updating credentials:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    </script>
+</body>
+
+</html>

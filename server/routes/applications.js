@@ -65,6 +65,22 @@ router.get('/job/:jobId', async (req, res) => {
     }
 });
 
+// Get all applications for an employer (across all jobs)
+router.get('/employer/:employerId', async (req, res) => {
+    try {
+        const jobs = await Job.find({ employer: req.params.employerId });
+        const jobIds = jobs.map(j => j._id);
+
+        const applications = await Application.find({ job: { $in: jobIds } })
+            .populate('job', 'title')
+            .sort({ createdAt: -1 });
+
+        res.json({ success: true, data: applications });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 // Update application status (Employer action)
 router.put('/:id/status', async (req, res) => {
     try {

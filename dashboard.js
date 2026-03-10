@@ -12,10 +12,48 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDashboard();
     handleTabSwitching();
     loadRoleSpecificContent();
+    initAnalyticsChart();
 });
 
+function initAnalyticsChart() {
+    const ctx = document.getElementById('analyticsChart');
+    if (!ctx) return;
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'New Jobs',
+                data: [12, 19, 15, 25, 22, 30],
+                borderColor: '#6366f1',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(99, 102, 241, 0.1)'
+            }, {
+                label: 'Applications',
+                data: [5, 12, 8, 15, 10, 20],
+                borderColor: '#10b981',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(16, 185, 129, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
 function setupDashboard() {
-    document.getElementById('welcomeText').textContent = `Welcome back, ${currentUser.name}!`;
+    document.getElementById('welcomeText').innerHTML = `<i class='bx bx-sun'></i> Welcome back, ${currentUser.name}!`;
+    document.getElementById('headerUserName').textContent = currentUser.name;
     document.getElementById('roleBadge').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
 
     // Show/hide menu items based on role
@@ -99,6 +137,11 @@ async function loadEmployerOverview() {
         const jobs = result.data || [];
         const activeJobs = jobs.filter(j => j.status === 'Open').length;
 
+        // Fetch applications count
+        const appRes = await fetch(`${API_BASE_URL}/applications/employer/${currentUser.userId}`);
+        const appResult = await appRes.json();
+        const totalApps = appResult.data ? appResult.data.length : 0;
+
         // Populate stats
         const statsGrid = document.getElementById('statsGrid');
         statsGrid.innerHTML = `
@@ -112,7 +155,7 @@ async function loadEmployerOverview() {
             </div>
             <div class="stat-card">
                 <div class="stat-icon stat-purple"><i class='bx bx-user-voice'></i></div>
-                <div class="stat-info"><h4>Applications</h4><p>-</p></div>
+                <div class="stat-info"><h4>Applications</h4><p>${totalApps}</p></div>
             </div>
         `;
 
@@ -151,6 +194,11 @@ async function loadSeekerOverview() {
         const result = await response.json();
         const jobs = result.data || [];
 
+        // Fetch seeker applications
+        const appRes = await fetch(`${API_BASE_URL}/applications/seeker/${currentUser.userId}`);
+        const appResult = await appRes.json();
+        const appliedCount = appResult.data ? appResult.data.length : 0;
+
         const statsGrid = document.getElementById('statsGrid');
         statsGrid.innerHTML = `
             <div class="stat-card">
@@ -159,7 +207,7 @@ async function loadSeekerOverview() {
             </div>
             <div class="stat-card">
                 <div class="stat-icon stat-green"><i class='bx bx-send'></i></div>
-                <div class="stat-info"><h4>Applied</h4><p>-</p></div>
+                <div class="stat-info"><h4>Applied</h4><p>${appliedCount}</p></div>
             </div>
         `;
 

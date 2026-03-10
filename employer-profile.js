@@ -11,6 +11,10 @@ async function loadProfile() {
     return;
   }
 
+  // Populate system credentials
+  document.getElementById('credName').textContent = currentUser.name || 'N/A';
+  document.getElementById('credEmail').textContent = currentUser.email || 'N/A';
+
   try {
     // Try to fetch existing employer profile
     const response = await fetch(`${API_BASE_URL}/employers?userId=${currentUser.userId}`);
@@ -26,14 +30,44 @@ async function loadProfile() {
       form.querySelector('input[placeholder="+1234567890"]').value = profile.phone || '';
       form.querySelector('input[placeholder="Enter address"]').value = profile.address || '';
       form.querySelector('textarea').value = profile.description || '';
+
+      // Populate View Mode
+      displayViewProfile(profile);
+
+      // Switch to View Mode by default
+      toggleView('view');
+      document.getElementById('backToView').style.display = 'block';
     }
   } catch (error) {
     console.error('Error loading profile:', error);
   }
 }
 
+function displayViewProfile(profile) {
+  document.getElementById('viewCompanyName').textContent = profile.companyName || 'No Name';
+  document.getElementById('viewWebsite').textContent = profile.website || 'No Website';
+  document.getElementById('viewWebsite').href = profile.website || '#';
+  document.getElementById('viewContactEmail').textContent = profile.contactEmail || 'Not provided';
+  document.getElementById('viewPhone').textContent = profile.phone || 'Not provided';
+  document.getElementById('viewAddress').textContent = profile.address || 'Not provided';
+  document.getElementById('viewDescription').textContent = profile.description || 'No description provided.';
+}
+
+function toggleView(mode) {
+  const profileView = document.getElementById('profileView');
+  const editView = document.getElementById('editView');
+
+  if (mode === 'view') {
+    profileView.style.display = 'block';
+    editView.style.display = 'none';
+  } else {
+    profileView.style.display = 'none';
+    editView.style.display = 'block';
+  }
+}
+
 // Handle form submission
-document.querySelector('form').addEventListener('submit', async function(e) {
+document.querySelector('form').addEventListener('submit', async function (e) {
   e.preventDefault();
 
   if (!currentUser.userId) {
@@ -65,8 +99,8 @@ document.querySelector('form').addEventListener('submit', async function(e) {
 
     if (result.success) {
       alert('Profile saved successfully!');
-      // Optionally redirect to employers list
-      // window.location.href = 'employers-list.html';
+      // Refresh and switch to view mode
+      loadProfile();
     } else {
       alert(result.message || 'Failed to save profile');
     }
