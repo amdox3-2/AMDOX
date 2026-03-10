@@ -54,6 +54,18 @@ body {
     font-weight: 800;
     color: var(--primary);
     letter-spacing: -0.025em;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.02);
+}
+
+#headerHomeBtn:hover {
+    background-color: #f1f5f9 !important;
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
 }
 
 .logo i {

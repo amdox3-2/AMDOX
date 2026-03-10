@@ -73,6 +73,21 @@ function setupDashboard() {
         sessionStorage.clear();
         window.location.href = 'index.html';
     });
+
+    // Home button and Logo functionality
+    const goToOverview = (e) => {
+        e.preventDefault();
+        const overviewTabBtn = document.querySelector('.nav-item[data-tab="overview"]');
+        if (overviewTabBtn) {
+            overviewTabBtn.click();
+        }
+    };
+
+    const logo = document.getElementById('logo');
+    if (logo) logo.addEventListener('click', goToOverview);
+
+    const headerHomeBtn = document.getElementById('headerHomeBtn');
+    if (headerHomeBtn) headerHomeBtn.addEventListener('click', goToOverview);
 }
 
 function handleTabSwitching() {

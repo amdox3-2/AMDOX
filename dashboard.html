@@ -15,7 +15,7 @@
     <div class="dashboard-wrapper">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo">
+            <div class="logo" id="logo">
                 <i class='bx bxs-briefcase-alt-2'></i>
                 <span>AMDOX</span>
             </div>
@@ -65,6 +65,10 @@
                 </div>
 
                 <div class="header-actions">
+                    <button id="headerHomeBtn"
+                        style="background: none; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 12px; cursor: pointer; color: var(--secondary); display: flex; align-items: center; gap: 8px; font-weight: 600; transition: all 0.2s;">
+                        <i class='bx bx-home-alt' style="font-size: 1.25rem;"></i> Home
+                    </button>
                     <div id="employerActions" style="display: none;">
                         <button class="primary-btn-sm" onclick="window.location.href='post-job.html'">
                             <i class='bx bx-plus'></i> Post New Job
