@@ -3,6 +3,7 @@ const router = express.Router();
 const Application = require('../models/Application');
 const Job = require('../models/Job');
 const Seeker = require('../models/Seeker');
+const { sendNotification } = require('../notifications');
 
 // Apply for a job
 router.post('/', async (req, res) => {
@@ -22,7 +23,17 @@ router.post('/', async (req, res) => {
             resumeSnapshot
         });
 
+
         await application.save();
+
+        // Notify employer
+        sendNotification(job.employer, {
+            type: 'NEW_APPLICATION',
+            title: 'New Application Received',
+            message: `Someone applied for your job: ${job.title}`,
+            jobId: job._id
+        });
+
         res.status(201).json({ success: true, data: application });
     } catch (error) {
         if (error.code === 11000) {
@@ -91,9 +102,20 @@ router.put('/:id/status', async (req, res) => {
             { new: true }
         );
 
+
         if (!application) {
             return res.status(404).json({ success: false, message: 'Application not found' });
         }
+
+        // Notify seeker
+        const job = await Job.findById(application.job);
+        sendNotification(application.seeker, {
+            type: 'STATUS_UPDATE',
+            title: 'Application Status Updated',
+            message: `Your application for "${job.title}" is now ${status}`,
+            jobId: job._id,
+            status: status
+        });
 
         res.json({ success: true, data: application });
     } catch (error) {

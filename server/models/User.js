@@ -11,16 +11,26 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: false // Optional for social login users
   },
   role: {
     type: String,
     enum: ['seeker', 'employer'],
-    required: true
+    default: 'seeker'
   },
   name: {
     type: String,
     required: true
+  },
+  authType: {
+    type: String,
+    enum: ['local', 'google', 'github'],
+    default: 'local'
+  },
+  socialId: {
+    type: String,
+    unique: true,
+    sparse: true // Allows multiple null/undefined values
   }
 }, {
   timestamps: true
@@ -28,7 +38,7 @@ const userSchema = new mongoose.Schema({
 
 // Hash password before saving
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+  if (!this.password || !this.isModified('password')) {
     return next();
   }
   const salt = await bcrypt.genSalt(10);
@@ -38,6 +48,7 @@ userSchema.pre('save', async function (next) {
 
 // Method to compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
+  if (!this.password) return false;
   return await bcrypt.compare(candidatePassword, this.password);
 };
 

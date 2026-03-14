@@ -4,80 +4,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Portal | Authentication</title>
+    <title>AMDOX | Unified Authentication</title>
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .auth-card {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .auth-info {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(-45deg);
+        }
+
+        .auth-form-side {
+            flex: 1.2;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+        }
+
+        .branding {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .branding i {
+            font-size: 2.5rem;
+        }
+
+        .role-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .role-tab {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 700;
+        }
+
+        .role-tab.active {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+            color: var(--primary);
+        }
+
+        .role-tab i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .social-btn:hover {
+            background: #f8fafc;
+        }
+
+        #authModeToggle {
+            color: var(--primary);
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
     <div class="auth-wrapper">
-        <div class="auth-container" id="container">
-            <div class="form-container sign-up">
-                <form>
-                    <h1>Create Account</h1>
-                    <p class="subtitle">Join our global job network</p>
-                    <div class="input-wrap">
-                        <label>Full Name</label>
-                        <input type="text" placeholder="John Doe" required>
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-info">
+                    <div class="branding">
+                        <i class='bx bxs-rocket'></i> AMDOX
                     </div>
-                    <div class="input-wrap">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="john@example.com" required>
-                    </div>
-                    <div class="input-wrap">
-                        <label>Register as</label>
-                        <select class="role-select">
-                            <option value="" disabled selected>Select your role...</option>
-                            <option value="seeker">Job Seeker</option>
-                            <option value="employer">Employer</option>
-                        </select>
-                    </div>
-                    <div class="input-wrap" id="resume-upload-wrap" style="display: none;">
-                        <label>Upload Resume</label>
-                        <input type="file" id="resume-upload" accept=".pdf,.doc,.docx">
-                    </div>
-                    <div class="input-wrap">
-                        <label>Password</label>
-                        <div class="pass-field">
-                            <input type="password" placeholder="••••••••" id="regPass" required>
-                            <i class='bx bx-hide' onclick="toggle('regPass', this)"></i>
+                    <h1 style="font-size: 3rem; margin-bottom: 20px; line-height: 1.1;">Find your next big move.</h1>
+                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 40px;">The world's most advanced job ecosystem for top-tier talent and visionary companies.</p>
+                    
+                    <div style="margin-top: auto;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <i class='bx bx-check-shield' style="font-size: 1.5rem;"></i>
+                            <span>Enterprise-grade security</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <i class='bx bx-trending-up' style="font-size: 1.5rem;"></i>
+                            <span>Real-time market insights</span>
                         </div>
                     </div>
-                    <button type="submit" class="primary-btn">Sign Up</button>
-                </form>
-            </div>
+                </div>
 
-            <div class="form-container sign-in">
-                <form>
-                    <h1>Sign In</h1>
-                    <p class="subtitle">Enter your credentials to continue</p>
-                    <div class="input-wrap">
-                        <label>Email</label>
-                        <input type="email" placeholder="you@example.com" required>
-                    </div>
-                    <div class="input-wrap">
-                        <label>Password</label>
-                        <div class="pass-field">
-                            <input type="password" placeholder="••••••••" id="logPass" required>
-                            <i class='bx bx-hide' onclick="toggle('logPass', this)"></i>
-                        </div>
-                    </div>
-                    <a href="#" class="forgot">Forgot password?</a>
-                    <button type="submit" class="primary-btn">Sign In</button>
-                </form>
-            </div>
+                <div class="auth-form-side">
+                    <div id="loginFormSection">
+                        <h2 style="font-size: 2rem; margin-bottom: 10px;">Welcome Back</h2>
+                        <p style="color: var(--secondary); margin-bottom: 40px;">Don't have an account? <span id="toRegister" style="color: var(--primary); font-weight: 700; cursor: pointer;">Join AMDOX</span></p>
 
-            <div class="toggle-container">
-                <div class="toggle">
-                    <div class="toggle-panel toggle-left">
-                        <h1>Welcome Back!</h1>
-                        <p>Already have an account?</p>
-                        <button class="hidden-btn" id="loginBtn">Sign In</button>
+                        <form id="loginForm">
+                            <div class="input-wrap">
+                                <label>Email Address</label>
+                                <input type="email" id="loginEmail" placeholder="you@example.com" required>
+                            </div>
+                            <div class="input-wrap">
+                                <label>Password</label>
+                                <input type="password" id="loginPass" placeholder="••••••••" required>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;">
+                                    <input type="checkbox" style="width: 18px; margin: 0;"> Remember me
+                                </label>
+                                <a href="#" style="color: var(--primary); font-size: 0.9rem; font-weight: 700; text-decoration: none;">Forgot Password?</a>
+                            </div>
+                            <button type="submit" class="primary-btn" style="width: 100%;">Sign Into Workspace</button>
+                        </form>
                     </div>
-                    <div class="toggle-panel toggle-right">
-                        <h1>New Here?</h1>
-                        <p>Start your career journey with us today</p>
-                        <button class="hidden-btn" id="registerBtn">Sign Up</button>
+
+                    <div id="registerFormSection" style="display: none;">
+                        <h2 style="font-size: 2rem; margin-bottom: 10px;">Create Account</h2>
+                        <p style="color: var(--secondary); margin-bottom: 30px;">Return to <span id="toLogin" style="color: var(--primary); font-weight: 700; cursor: pointer;">Sign In</span></p>
+
+                        <form id="registerForm">
+                            <div class="role-tabs">
+                                <div class="role-tab active" data-role="seeker">
+                                    <i class='bx bxs-user-circle'></i>
+                                    Seeker
+                                </div>
+                                <div class="role-tab" data-role="employer">
+                                    <i class='bx bxs-business'></i>
+                                    Employer
+                                </div>
+                            </div>
+                            
+                            <div class="input-wrap">
+                                <label>Full Legal Name</label>
+                                <input type="text" id="regName" placeholder="e.g. John Doe" required>
+                            </div>
+                            <div class="input-wrap">
+                                <label>Primary Email</label>
+                                <input type="email" id="regEmail" placeholder="you@example.com" required>
+                            </div>
+                            <div class="input-wrap">
+                                <label>Secure Password</label>
+                                <input type="password" id="regPass" placeholder="••••••••" required>
+                            </div>
+                            
+                            <button type="submit" class="primary-btn" style="width: 100%;">Create My Profile</button>
+                        </form>
+                    </div>
+
+                    <div class="social-login">
+                        <button class="social-btn" id="googleBtn"><i class='bx bxl-google'></i> Google</button>
+                        <button class="social-btn" id="githubBtn"><i class='bx bxl-github'></i> GitHub</button>
                     </div>
                 </div>
             </div>
@@ -85,6 +213,32 @@
     </div>
 
     <script src="index.js"></script>
+    <script>
+        // Tab switching logic
+        const loginSection = document.getElementById('loginFormSection');
+        const registerSection = document.getElementById('registerFormSection');
+        const toRegister = document.getElementById('toRegister');
+        const toLogin = document.getElementById('toLogin');
+
+        toRegister.onclick = () => {
+            loginSection.style.display = 'none';
+            registerSection.style.display = 'block';
+        };
+
+        toLogin.onclick = () => {
+            registerSection.style.display = 'none';
+            loginSection.style.display = 'block';
+        };
+
+        // Role selection logic
+        const tabs = document.querySelectorAll('.role-tab');
+        tabs.forEach(tab => {
+            tab.onclick = () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            };
+        });
+    </script>
 </body>
 
 </html>

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     handleTabSwitching();
     loadRoleSpecificContent();
     initAnalyticsChart();
+    setupNotifications();
 });
 
 function initAnalyticsChart() {
@@ -383,48 +384,8 @@ function displayJobsList(jobs, container, showActions = false) {
     `).join('');
 }
 
-async function viewJobDetails(jobId) {
-    const modal = document.getElementById('jobModal');
-    const body = document.getElementById('jobModalBody');
-    modal.style.display = 'block';
-    body.innerHTML = 'Loading...';
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/jobs/${jobId}`);
-        const result = await response.json();
-        const job = result.data;
-
-        body.innerHTML = `
-            <div class="job-detail-header">
-                <h2>${job.title}</h2>
-                <p class="company">${job.companyName}</p>
-                <div class="meta">
-                    <span><i class='bx bx-map'></i> ${job.location}</span>
-                    <span><i class='bx bx-briefcase'></i> ${job.jobType}</span>
-                    <span><i class='bx bx-money'></i> ${job.salaryRange}</span>
-                </div>
-            </div>
-            <div class="job-detail-body">
-                <h3>Description</h3>
-                <p>${job.description}</p>
-                <h3>Qualifications</h3>
-                <p>${job.qualifications}</p>
-                <h3>Responsibilities</h3>
-                <p>${job.responsibilities}</p>
-            </div>
-            ${currentUser.role === 'seeker' ? `
-                <div class="job-detail-footer">
-                    <button class="primary-btn" id="applyNowBtn">Apply for this Job</button>
-                </div>
-            ` : ''}
-        `;
-
-        if (currentUser.role === 'seeker') {
-            document.getElementById('applyNowBtn').onclick = () => handleApply(job._id);
-        }
-    } catch (error) {
-        body.innerHTML = 'Error loading job details.';
-    }
+function viewJobDetails(jobId) {
+    window.location.href = `job-details.html?id=${jobId}`;
 }
 
 async function handleApply(jobId) {
@@ -466,3 +427,83 @@ window.onclick = (e) => {
         e.target.style.display = 'none';
     }
 };
+
+// --- Notifications ---
+
+function setupNotifications() {
+    if (!currentUser.userId) return;
+    
+    // Correct URL for EventSource - needs to be absolute or relative to origin
+    const streamUrl = `${API_BASE_URL}/notifications/stream/${currentUser.userId}`;
+    const eventSource = new EventSource(streamUrl);
+    
+    eventSource.onmessage = (event) => {
+        try {
+            const data = JSON.parse(event.data);
+            showNotification(data);
+        } catch (e) {
+            console.error("Error parsing notification data", e);
+        }
+    };
+
+    eventSource.onerror = (err) => {
+        console.warn("Notification stream lost. Reconnecting in 5s...");
+        eventSource.close();
+        setTimeout(setupNotifications, 5000);
+    };
+}
+
+function showNotification(data) {
+    const container = document.getElementById('notification-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `notification-toast ${data.type === 'NEW_APPLICATION' ? 'new-app' : 'status-update'}`;
+    
+    toast.innerHTML = `
+        <i class='bx bx-x close-toast'></i>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <i class='bx ${data.type === 'NEW_APPLICATION' ? 'bxs-bell' : 'bxs-info-circle'}' style="font-size: 1.5rem; color: ${data.type === 'NEW_APPLICATION' ? 'var(--success)' : 'var(--primary)'}"></i>
+            <div>
+                <h4>${data.title}</h4>
+                <p>${data.message}</p>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    // Auto remove after 8 seconds
+    const timer = setTimeout(() => {
+        removeToast(toast);
+    }, 8000);
+
+    const closeBtn = toast.querySelector('.close-toast');
+    if (closeBtn) {
+        closeBtn.onclick = (e) => {
+            e.stopPropagation();
+            clearTimeout(timer);
+            removeToast(toast);
+        };
+    }
+
+    toast.onclick = () => {
+        if (data.type === 'NEW_APPLICATION') {
+            const tab = document.querySelector('.nav-item[data-tab="my-jobs"]');
+            if (tab) tab.click();
+        } else {
+            const tab = document.querySelector('.nav-item[data-tab="my-apps"]');
+            if (tab) tab.click();
+        }
+        removeToast(toast);
+    };
+}
+
+function removeToast(toast) {
+    toast.style.animation = 'toastFadeOut 0.3s forwards';
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.remove();
+        }
+    }, 300);
+}

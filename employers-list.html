@@ -4,36 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Portal | Employers Directory</title>
-    <link rel="stylesheet" href="employers-list.css">
+    <title>AMDOX | Partner Directory</title>
+    <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .directory-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .directory-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .directory-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .search-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 8px;
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .search-container input {
+            border: none;
+            background: transparent;
+            padding: 15px 20px;
+            flex: 1;
+            font-size: 1.1rem;
+        }
+
+        .search-container input:focus {
+            box-shadow: none;
+        }
+
+        .employers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .employer-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .employer-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .employer-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .company-logo {
+            width: 64px;
+            height: 64px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.25rem;
+        }
+
+        .back-nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .info-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="list-container">
-        <div class="header-section">
-            <h1>Employers Directory</h1>
-            <p>Browse all registered companies</p>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search companies by name, email, or description...">
-                <i class='bx bx-search'></i>
-            </div>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="seekers-list.html" class="nav-link">View Job Seekers</a>
-            </div>
+    <div class="directory-container">
+        <div class="back-nav">
+            <a href="dashboard.html" class="nav-btn" style="color: var(--secondary); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                <i class='bx bx-arrow-back'></i> Dashboard
+            </a>
+            <a href="seekers-list.html" class="nav-btn" style="color: #10b981; text-decoration: none; font-weight: 700;">Talent Directory →</a>
         </div>
 
-        <div class="loading" id="loading">Loading employers...</div>
-        <div class="error-message" id="errorMessage" style="display: none;"></div>
-
-        <div class="employers-grid" id="employersGrid">
-            <!-- Employers will be dynamically inserted here -->
+        <div class="directory-header">
+            <h1>Partner Network</h1>
+            <p style="color: var(--secondary); font-size: 1.25rem;">Scale your ambitions with the world's most innovative organizations.</p>
         </div>
 
-        <div class="no-results" id="noResults" style="display: none;">
-            <i class='bx bx-search-alt-2'></i>
-            <p>No employers found matching your search.</p>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by company name or industry...">
+            <button class="primary-btn" style="background: #10b981; border-radius: 14px; padding: 0 25px;"><i class='bx bx-search'></i></button>
+        </div>
+
+        <div id="loading" style="text-align: center; padding: 40px; color: var(--secondary);">
+            <i class='bx bx-loader-alt bx-spin' style="font-size: 3rem; margin-bottom: 10px; color: #10b981;"></i>
+            <p>Syncing with enterprise partners...</p>
+        </div>
+
+        <div class="employers-grid" id="employersGrid"></div>
+
+        <div id="noResults" style="display: none; text-align: center; padding: 80px 0;">
+            <i class='bx bxs-business' style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
+            <h3>No companies found</h3>
+            <p style="color: var(--secondary);">Try adjusting your search criteria.</p>
         </div>
     </div>
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const connectDB = require('./config/db');
 
 // Connect to MongoDB
@@ -21,6 +21,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, '..')));
 
 // Routes
+const { streamNotifications } = require('./notifications');
+app.get('/api/notifications/stream/:userId', streamNotifications);
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/employers', require('./routes/employers'));
 app.use('/api/seekers', require('./routes/seekers'));

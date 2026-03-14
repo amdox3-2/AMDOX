@@ -1,303 +1,140 @@
 :root {
-    --primary: #2563eb;
-    --gradient: linear-gradient(to right, #2563eb, #1d4ed8);
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #64748b;
+    --accent: #f43f5e;
+    --success: #10b981;
+    --bg-main: #f8fafc;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 body {
-    background: #f8fafc;
+    background: radial-gradient(circle at top right, #e0e7ff 0%, #f8fafc 40%),
+                radial-gradient(circle at bottom left, #f1f5f9 0%, #f8fafc 40%);
     min-height: 100vh;
-    margin: 0;
+    color: #1e293b;
     overflow-x: hidden;
 }
 
-.dashboard-wrapper {
-    display: flex;
-    min-height: 100vh;
-    overflow-x: hidden;
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Global Button Styles */
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
+}
+
+.primary-btn:active {
+    transform: translateY(0);
+}
+
+/* Auth Specifics */
 .auth-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 20px;
+    padding: 24px;
 }
 
 .auth-container {
-    background-color: #fff;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 32px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    min-height: 600px;
     position: relative;
     overflow: hidden;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.form-container {
+    padding: 60px;
     width: 100%;
-    max-width: 850px;
-    min-height: 550px;
-    margin: 20px;
 }
 
-/* Mobile responsive auth */
-@media (max-width: 768px) {
-    .auth-container {
-        min-height: 650px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-container {
-        width: 100% !important;
-        position: relative !important;
-        transform: none !important;
-    }
-
-    .sign-up {
-        display: none;
-        /* We'll use JS or toggle to show/hide on mobile */
-    }
-
-    .auth-container.active .sign-in {
-        display: none;
-    }
-
-    .auth-container.active .sign-up {
-        display: block;
-        opacity: 1;
-        transform: none;
-        animation: none;
-    }
-
-    .toggle-container {
-        display: none;
-        /* Hide toggle panel on mobile, use simple buttons instead */
-    }
-
-    .auth-container h1 {
-        font-size: 1.5rem;
-    }
-}
-
-.auth-container form {
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px 40px;
-    height: 100%;
-    overflow-y: auto;
-}
-
-.auth-container h1 {
-    font-size: 1.75rem;
-    color: #0f172a;
-    margin-bottom: 8px;
-}
-
-.subtitle {
-    color: #64748b;
-    margin-bottom: 20px;
-    font-size: 0.85rem;
-    text-align: center;
-}
-
-/* Inputs */
 .input-wrap {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 15px;
+    margin-bottom: 24px;
 }
 
 .input-wrap label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 5px;
     display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 8px;
 }
 
-input,
-select {
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    padding: 12px 15px;
-    margin: 8px 0;
+input, select, textarea {
     width: 100%;
-    border-radius: 8px;
-    outline: none;
-    font-size: 0.95rem;
-}
-
-.pass-field {
-    width: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.pass-field i {
-    position: absolute;
-    right: 15px;
-    color: #64748b;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-/* Buttons */
-.primary-btn {
-    background: var(--gradient);
-    color: #fff;
+    padding: 14px 16px;
+    background: white;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
     font-size: 1rem;
-    padding: 12px 45px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-    width: 100%;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s;
 }
 
-.primary-btn:hover {
-    opacity: 0.9;
-    transform: scale(0.98);
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
-.forgot {
-    color: var(--primary);
-    font-size: 0.85rem;
-    text-decoration: none;
-    margin: 10px 0 20px;
-    font-weight: 500;
-}
-
-/* Animation / Transition Panels */
-.form-container {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
-}
-
-.sign-in {
-    left: 0;
-    width: 50%;
-    z-index: 2;
-}
-
-.sign-up {
-    left: 0;
-    width: 50%;
-    opacity: 0;
-    z-index: 1;
-}
-
-.auth-container.active .sign-in {
-    transform: translateX(100%);
-    opacity: 0;
-}
-
-.auth-container.active .sign-up {
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
-    animation: move 0.6s;
-}
-
-@keyframes move {
-
-    0%,
-    49.99% {
-        opacity: 0;
-        z-index: 1;
+/* Mobile responsive fixes */
+@media (max-width: 768px) {
+    .auth-container {
+        flex-direction: column;
+        border-radius: 24px;
     }
-
-    50%,
-    100% {
-        opacity: 1;
-        z-index: 5;
+    .form-container {
+        padding: 30px;
     }
-}
-
-.toggle-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.6s ease-in-out;
-    border-radius: 100px 0 0 100px;
-    z-index: 1000;
-}
-
-.auth-container.active .toggle-container {
-    transform: translateX(-100%);
-    border-radius: 0 100px 100px 0;
-}
-
-.toggle {
-    background: var(--gradient);
-    color: #fff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
-}
-
-.auth-container.active .toggle {
-    transform: translateX(50%);
-}
-
-.toggle-panel {
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 30px;
-    text-align: center;
-    top: 0;
-    transition: all 0.6s ease-in-out;
-}
-
-.toggle-left {
-    transform: translateX(-200%);
-}
-
-.auth-container.active .toggle-left {
-    transform: translateX(0);
-}
-
-.toggle-right {
-    right: 0;
-    transform: translateX(0);
-}
-
-.auth-container.active .toggle-right {
-    transform: translateX(200%);
-}
-
-.hidden-btn {
-    background-color: transparent;
-    border: 2px solid #fff;
-    color: #fff;
-    font-size: 0.9rem;
-    padding: 10px 45px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 20px;
-}
+}

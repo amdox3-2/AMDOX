@@ -4,62 +4,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMDOX | Account Credentials</title>
+    <title>AMDOX | Account Settings</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="seeker-profile.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        .credentials-card {
-            background: white;
-            border-radius: 20px;
+        .settings-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
             width: 100%;
-            max-width: 500px;
+            max-width: 550px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary);
         }
 
         .form-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
-        .back-link {
-            display: inline-flex;
+        .form-header h2 {
+            font-size: 1.75rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .info-box {
+            background: rgba(99, 102, 241, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 24px 0;
+            font-size: 0.875rem;
+            color: #475569;
+            display: flex;
+            gap: 12px;
             align-items: center;
-            gap: 5px;
-            text-decoration: none;
-            color: #512da8;
-            font-weight: 600;
-            margin-bottom: 20px;
+        }
+
+        .info-box i {
+            font-size: 1.25rem;
+            color: var(--primary);
         }
     </style>
 </head>
 
-<body style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; height: 100vh;">
-    <div class="credentials-card scroll-reveal visible">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <a href="seeker-profile.html" class="back-link" style="margin-bottom: 0;"><i class='bx bx-arrow-back'></i>
-                Back to Profile</a>
-            <a href="dashboard.html" class="back-link" style="margin-bottom: 0;"><i class='bx bx-grid-alt'></i>
-                Dashboard</a>
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px;">
+    <div class="settings-card">
+        <div class="nav-links">
+            <a href="#" id="backToProfile" class="nav-btn"><i class='bx bx-arrow-back'></i> Return to Profile</a>
+            <a href="dashboard.html" class="nav-btn"><i class='bx bxs-dashboard'></i> Dashboard</a>
         </div>
+
         <div class="form-header">
             <h2>Account Credentials</h2>
-            <p>Update your login name and email</p>
+            <p style="color: var(--secondary);">Manage your workspace identity and access</p>
         </div>
+
         <form id="credentialsForm">
-            <div class="input-group">
-                <label>Account Name</label>
-                <input type="text" id="accName" placeholder="Enter name" required>
+            <div class="input-wrap">
+                <label>Display Name</label>
+                <input type="text" id="accName" placeholder="Legal full name" required>
             </div>
-            <div class="input-group">
+            
+            <div class="input-wrap">
                 <label>Login Email Address</label>
-                <input type="email" id="accEmail" placeholder="Enter email" required>
+                <input type="email" id="accEmail" placeholder="Primary workspace email" required>
             </div>
-            <div style="margin-top: 10px; font-size: 0.85rem; color: #64748b;">
-                <p><i class='bx bx-info-circle'></i> Changing your email will update your login credentials.</p>
+
+            <div class="info-box">
+                <i class='bx bx-info-circle'></i>
+                <p>Modifying your email will update your login credentials for future sessions.</p>
             </div>
-            <button type="submit" class="primary-btn">Update Credentials</button>
+
+            <button type="submit" class="primary-btn" style="width: 100%;">Apply Changes</button>
         </form>
     </div>
 
@@ -71,9 +116,13 @@
             window.location.href = 'index.html';
         }
 
-        // Fill current info
-        document.getElementById('accName').value = currentUser.name;
-        document.getElementById('accEmail').value = currentUser.email;
+        // Set dynamic back link
+        const backLink = document.getElementById('backToProfile');
+        backLink.href = currentUser.role === 'employer' ? 'employer-profile.html' : 'seeker-profile.html';
+
+        // Pre-fill fields
+        document.getElementById('accName').value = currentUser.name || '';
+        document.getElementById('accEmail').value = currentUser.email || '';
 
         document.getElementById('credentialsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -93,16 +142,15 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    alert('Credentials updated successfully!');
-                    // Update sessionStorage
                     sessionStorage.setItem('currentUser', JSON.stringify(result.data));
-                    window.location.href = 'seeker-profile.html';
+                    alert('Security credentials updated successfully.');
+                    window.location.href = backLink.href;
                 } else {
-                    alert(result.message || 'Update failed');
+                    alert(result.message || 'Verification failed');
                 }
             } catch (error) {
-                console.error('Error updating credentials:', error);
-                alert('An error occurred. Please try again.');
+                console.error('Update error:', error);
+                alert('Connection failure. Please try again later.');
             }
         });
     </script>

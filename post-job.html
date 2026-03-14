@@ -4,33 +4,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMDOX | Post Job</title>
+    <title>AMDOX | Create Job Listing</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="seeker-profile.css"> <!-- Reusing form styles -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .post-job-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 50px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 900px;
+            margin: 40px auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+            transform: translateX(-5px);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+    </style>
 </head>
 
-<body>
-    <div class="profile-container">
-        <div class="profile-header">
-            <a href="dashboard.html"
-                style="text-decoration: none; color: #64748b; margin-bottom: 20px; display: inline-block;">
-                <i class='bx bx-arrow-back'></i> Back to Dashboard
-            </a>
-            <h1>Post a New Job</h1>
-            <p>Tell prospective candidates about the position</p>
+<body style="padding: 24px;">
+    <div class="post-job-container">
+        <a href="dashboard.html" class="back-btn"><i class='bx bx-arrow-back'></i> Exit to Dashboard</a>
+        
+        <div class="page-header">
+            <h1>Create Opportunity</h1>
+            <p style="color: var(--secondary); font-size: 1.1rem;">Reach thousands of qualified candidates across our global network</p>
         </div>
-        <form id="postJobForm">
-            <div class="input-group">
+
+        <form id="postJobForm" class="form-grid">
+            <div class="input-wrap full-width">
                 <label>Job Title</label>
-                <input type="text" id="jobTitle" placeholder="e.g. Senior Software Engineer" required>
+                <input type="text" id="jobTitle" placeholder="e.g. Senior Product Designer" required>
             </div>
-            <div class="input-group">
+
+            <div class="input-wrap">
                 <label>Location</label>
-                <input type="text" id="location" placeholder="e.g. New York, NY (or Remote)" required>
+                <input type="text" id="location" placeholder="e.g. Bengaluru, India (or Hybrid)" required>
             </div>
-            <div class="input-group">
-                <label>Job Type</label>
+
+            <div class="input-wrap">
+                <label>Job Classification</label>
                 <select id="jobType">
                     <option value="Full-time">Full-time</option>
                     <option value="Part-time">Part-time</option>
@@ -39,24 +99,32 @@
                     <option value="Remote">Remote</option>
                 </select>
             </div>
-            <div class="input-group">
-                <label>Salary Range</label>
-                <input type="text" id="salaryRange" placeholder="e.g. $80,000 - $120,000 per year" required>
+
+            <div class="input-wrap full-width">
+                <label>Compensation Package</label>
+                <input type="text" id="salaryRange" placeholder="e.g. ₹12,00,000 - ₹18,00,000 LPA" required>
             </div>
-            <div class="input-group">
-                <label>Job Description</label>
-                <textarea id="description" rows="5" placeholder="Describe the role in detail..." required></textarea>
+
+            <div class="input-wrap full-width">
+                <label>Detailed Role Description</label>
+                <textarea id="description" placeholder="Specify the core mission and expectations..." required></textarea>
             </div>
-            <div class="input-group">
-                <label>Qualifications</label>
-                <textarea id="qualifications" rows="4" placeholder="List required skills and education..."
-                    required></textarea>
+
+            <div class="input-wrap">
+                <label>Required Qualifications</label>
+                <textarea id="qualifications" placeholder="Skills, experience, and education..." required></textarea>
             </div>
-            <div class="input-group">
-                <label>Responsibilities</label>
-                <textarea id="responsibilities" rows="4" placeholder="List day-to-day tasks..." required></textarea>
+
+            <div class="input-wrap">
+                <label>Key Responsibilities</label>
+                <textarea id="responsibilities" placeholder="Daily impact and deliverables..." required></textarea>
             </div>
-            <button type="submit" class="primary-btn">Publish Job Listing</button>
+
+            <div class="full-width" style="margin-top: 20px;">
+                <button type="submit" class="primary-btn" style="width: 100%; padding: 18px;">
+                    <i class='bx bx-paper-plane'></i> Publish to Global Talent Pool
+                </button>
+            </div>
         </form>
     </div>
 
@@ -91,13 +159,13 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    alert('Job posted successfully!');
+                    alert('Opportunity successfully published.');
                     window.location.href = 'dashboard.html';
                 } else {
-                    alert(result.message);
+                    alert(result.message || 'Validation error');
                 }
             } catch (error) {
-                alert('Error posting job.');
+                alert('Publishing service unavailable.');
             }
         });
     </script>

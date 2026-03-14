@@ -13,126 +13,113 @@
 <body>
     <div class="profile-container" id="profileView" style="display: none;">
         <div class="profile-header">
-            <div class="profile-avatar"
-                style="width: 100px; height: 100px; background: #2563eb; color: white; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 60px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <div class="profile-avatar">
                 <i class='bx bxs-business'></i>
             </div>
             <h1 id="viewCompanyName">Company Name</h1>
             <p id="viewWebsite">https://example.com</p>
-            <div class="action-buttons" style="margin-top: 15px;">
-                <button class="edit-btn" onclick="toggleView('edit')"
-                    style="background-color: white; color: #2563eb; border: 2px solid #2563eb; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    <i class='bx bxs-edit'></i> Edit Profile
+            
+            <div class="action-buttons">
+                <button class="edit-btn" onclick="toggleView('edit')">
+                    <i class='bx bxs-edit-alt'></i> Manage Identity
                 </button>
             </div>
         </div>
 
-        <div class="info-card"
-            style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 25px; border-left: 4px solid #2563eb;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin: 0; color: #1e293b;"><i class='bx bxs-lock-alt'></i> Account Credentials</h3>
-                <a href="account-settings.html"
-                    style="font-size: 0.85rem; color: #2563eb; text-decoration: none; font-weight: 600;"><i
-                        class='bx bx-edit-alt'></i> Edit</a>
+        <div class="info-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3><i class='bx bxs-shield-quarter'></i> Corporate Credentials</h3>
+                <a href="account-settings.html" class="edit-btn" style="padding: 6px 12px; font-size: 0.8rem; border-radius: 8px;">Security Settings</a>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div>
-                    <label
-                        style="font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Account
-                        Name</label>
-                    <p id="credName" style="margin: 5px 0 0; font-weight: 500;">Loading...</p>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Administrative Name</label>
+                    <p id="credName">Loading...</p>
                 </div>
-                <div>
-                    <label
-                        style="font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Login
-                        Email</label>
-                    <p id="credEmail" style="margin: 5px 0 0; font-weight: 500;">Loading...</p>
+                <div class="info-item">
+                    <label>Auth Email</label>
+                    <p id="credEmail">Loading...</p>
                 </div>
             </div>
         </div>
 
         <div class="profile-content">
-            <div class="info-card"
-                style="background: #f9f9f9; border-radius: 15px; padding: 20px; margin-bottom: 20px; border-left: 5px solid #2563eb;">
-                <h3><i class='bx bxs-contact'></i> Company Contact</h3>
-                <div class="info-grid"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div class="info-card">
+                <h3><i class='bx bxs-envelope'></i> Official Channels</h3>
+                <div class="info-grid">
                     <div class="info-item">
-                        <label
-                            style="font-size: 12px; color: #888; text-transform: uppercase; font-weight: 600;">Email</label>
-                        <p id="viewContactEmail" style="margin: 5px 0 0; font-weight: 500;">Not provided</p>
+                        <label>Public Contact Email</label>
+                        <p id="viewContactEmail">Not provided</p>
                     </div>
                     <div class="info-item">
-                        <label
-                            style="font-size: 12px; color: #888; text-transform: uppercase; font-weight: 600;">Phone</label>
-                        <p id="viewPhone" style="margin: 5px 0 0; font-weight: 500;">Not provided</p>
+                        <label>Business Line</label>
+                        <p id="viewPhone">Not provided</p>
                     </div>
                 </div>
-                <div class="info-item" style="margin-top: 15px;">
-                    <label
-                        style="font-size: 12px; color: #888; text-transform: uppercase; font-weight: 600;">Address</label>
-                    <p id="viewAddress" style="margin: 5px 0 0; font-weight: 500;">Not provided</p>
+                <div class="info-item" style="margin-top: 25px;">
+                    <label>Headquarters</label>
+                    <p id="viewAddress">Not provided</p>
                 </div>
             </div>
 
-            <div class="info-card"
-                style="background: #f9f9f9; border-radius: 15px; padding: 20px; margin-bottom: 20px; border-left: 5px solid #2563eb;">
-                <h3><i class='bx bxs-info-circle'></i> About Company</h3>
-                <p id="viewDescription" style="line-height: 1.6; color: #475569;">No description provided.</p>
+            <div class="info-card">
+                <h3><i class='bx bxs-quote-alt-left'></i> Vision & Mission</h3>
+                <p id="viewDescription" style="line-height: 1.8; color: #475569;">No description provided.</p>
             </div>
         </div>
 
-        <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 20px;">
-            <a href="dashboard.html" style="color: #2563eb; text-decoration: none; font-weight: 600;"><i
-                    class='bx bx-grid-alt'></i> Dashboard</a>
-            <a href="employers-list.html" style="color: #2563eb; text-decoration: none; font-weight: 600;">View All
-                Employers →</a>
+        <div style="text-align: center; margin-top: 40px; display: flex; justify-content: center; gap: 30px;">
+            <a href="dashboard.html" style="color: var(--primary); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                <i class='bx bxs-dashboard'></i> Dashboard
+            </a>
+            <a href="employers-list.html" style="color: var(--secondary); text-decoration: none; font-weight: 700;">Partner Network →</a>
         </div>
     </div>
 
     <div class="profile-container" id="editView">
-        <div class="profile-header" style="position: relative;">
-            <h1>Employer Profile</h1>
-            <p>Manage your company information and contact details</p>
-            <button class="view-btn" id="backToView"
-                style="display: none; position: absolute; top: 0; right: 0; background: white; color: #2563eb; border: 2px solid #2563eb; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-weight: 600;"
-                onclick="toggleView('view')">
-                <i class='bx bxs-business'></i> View Profile
-            </button>
+        <div class="profile-header">
+            <h1 style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Organization Hub</h1>
+            <p>Optimize how your brand appears to top talent</p>
+            <div style="margin-top: 20px;">
+                <button class="view-btn" id="backToView" style="display: none; margin: 0 auto;" onclick="toggleView('view')">
+                    <i class='bx bxs-user-detail'></i> Return to Profile
+                </button>
+            </div>
         </div>
-        <form>
-            <div class="input-group">
-                <label>Company Name</label>
-                <input type="text" placeholder="Enter company name" required>
+        <form style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div class="input-group" style="grid-column: span 2;">
+                <label>Legal Company Name</label>
+                <input type="text" id="companyName" placeholder="e.g. Acme Corporation" required>
             </div>
             <div class="input-group">
-                <label>Website URL</label>
-                <input type="url" placeholder="https://example.com">
+                <label>Official Website</label>
+                <input type="url" id="website" placeholder="https://www.acme.com">
             </div>
             <div class="input-group">
-                <label>Contact Email</label>
-                <input type="email" placeholder="hr@company.com" required>
+                <label>Corporate Contact Email</label>
+                <input type="email" id="contactEmail" placeholder="hr@acme.com" required>
             </div>
             <div class="input-group">
-                <label>Phone Number</label>
-                <input type="tel" placeholder="+1234567890">
+                <label>Direct Support Phone</label>
+                <input type="tel" id="phone" placeholder="+1 (555) 000-0000">
             </div>
             <div class="input-group">
-                <label>Address</label>
-                <input type="text" placeholder="Enter address">
+                <label>Main Office Address</label>
+                <input type="text" id="address" placeholder="Street, City, Country">
             </div>
-
-            <div class="input-group">
-                <label>Company Description</label>
-                <textarea rows="4" placeholder="Tell us about your company..."></textarea>
+            <div class="input-group" style="grid-column: span 2;">
+                <label>Company Portfolio / Mission Statement</label>
+                <textarea id="description" rows="5" placeholder="Highlight your company's core values, culture, and what makes it a great place to work..."></textarea>
             </div>
-            <button type="submit" class="primary-btn">Save Company Info</button>
+            <div style="grid-column: span 2;">
+                <button type="submit" class="primary-btn">Save Organizational Changes</button>
+            </div>
         </form>
-        <div style="text-align: center; margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
-            <a href="dashboard.html" style="color: #2563eb; text-decoration: none; font-weight: 600;"><i
-                    class='bx bx-grid-alt'></i> Dashboard</a>
-            <a href="employers-list.html" style="color: #2563eb; text-decoration: none; font-weight: 600;">View All
-                Employers →</a>
+        <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 30px;">
+            <a href="dashboard.html" style="color: var(--primary); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                <i class='bx bx-grid-alt'></i> Portal Home
+            </a>
+            <a href="employers-list.html" style="color: var(--secondary); text-decoration: none; font-weight: 700;">Partner Feed →</a>
         </div>
     </div>
     <script src="employer-profile.js"></script>

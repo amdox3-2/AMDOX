@@ -1,130 +1,158 @@
-const container = document.getElementById('container');
-const registerBtn = document.getElementById('registerBtn');
-const loginBtn = document.getElementById('loginBtn');
-const roleSelect = document.querySelector('.role-select');
-const resumeUploadWrap = document.getElementById('resume-upload-wrap');
+const API_BASE_URL = 'http://127.0.0.1:3000/api';
 
-registerBtn.addEventListener('click', () => {
-    container.classList.add("active");
-});
-
-loginBtn.addEventListener('click', () => {
-    container.classList.remove("active");
-});
-
-roleSelect.addEventListener('change', () => {
-    if (roleSelect.value === 'seeker') {
-        resumeUploadWrap.style.display = 'block';
-    } else {
-        resumeUploadWrap.style.display = 'none';
-    }
-});
-
-function toggle(id, icon) {
-    const input = document.getElementById(id);
-    if (input.type === "password") {
-        input.type = "text";
-        icon.classList.replace('bx-hide', 'bx-show');
-    } else {
-        input.type = "password";
-        icon.classList.replace('bx-show', 'bx-hide');
-    }
-}
-
-// Handle Sign Up Form Submission
-document.querySelector('.sign-up form').addEventListener('submit', async function (e) {
+// Handle Login Form Submission
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    const name = this.querySelector('input[type="text"]').value;
-    const email = this.querySelector('input[type="email"]').value;
-    const password = document.getElementById('regPass').value;
-    const role = this.querySelector('.role-select').value;
-
-    if (!role) {
-        alert('Please select a role to register.');
-        return;
-    }
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPass').value;
 
     try {
-        // Register user via API
-        const response = await fetch('http://127.0.0.1:3000/api/auth/register', {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, email, password, role })
-        });
-
-        const result = await response.json();
-
-        if (!result.success) {
-            alert(result.message || 'Registration failed');
-            return;
-        }
-
-        // Store user info in sessionStorage for profile creation
-        sessionStorage.setItem('currentUser', JSON.stringify(result.data));
-
-        // Handle resume upload for seekers
-        if (role === 'seeker') {
-            const resumeFile = document.getElementById('resume-upload').files[0];
-            if (resumeFile) {
-                const formData = new FormData();
-                formData.append('resume', resumeFile);
-
-                try {
-                    const uploadResponse = await fetch('http://127.0.0.1:3000/api/upload/resume', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    const uploadResult = await uploadResponse.json();
-                    if (uploadResult.success) {
-                        sessionStorage.setItem('resumeInfo', JSON.stringify(uploadResult.data));
-                    }
-                } catch (uploadError) {
-                    console.error('Resume upload error:', uploadError);
-                }
-            }
-        }
-
-        // Redirect to appropriate profile page
-        window.location.href = 'dashboard.html';
-    } catch (error) {
-        console.error('Registration error:', error);
-        alert('Registration failed. Please try again.');
-    }
-});
-
-// Handle Sign In Form Submission
-document.querySelector('.sign-in form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const email = this.querySelector('input[type="email"]').value;
-    const password = document.getElementById('logPass').value;
-
-    try {
-        const response = await fetch('http://127.0.0.1:3000/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         });
 
         const result = await response.json();
 
-        if (!result.success) {
+        if (result.success) {
+            sessionStorage.setItem('currentUser', JSON.stringify(result.data));
+            window.location.href = 'dashboard.html';
+        } else {
             alert(result.message || 'Invalid credentials');
-            return;
         }
-
-        // Store user info in sessionStorage
-        sessionStorage.setItem('currentUser', JSON.stringify(result.data));
-
-        // Redirect based on role
-        window.location.href = 'dashboard.html';
     } catch (error) {
         console.error('Login error:', error);
-        alert('Login failed. Please try again.');
+        alert('Login services are currently offline. Please ensure the server is running.');
     }
 });
 
+// Handle Register Form Submission
+document.getElementById('registerForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPass').value;
+    
+    // Get role from active tab
+    const activeTab = document.querySelector('.role-tab.active');
+    const role = activeTab ? activeTab.getAttribute('data-role') : 'seeker';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password, role })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            sessionStorage.setItem('currentUser', JSON.stringify(result.data));
+            window.location.href = 'dashboard.html';
+        } else {
+            alert(result.message || 'Registration failed');
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        alert('Server unreachable. Please check your connection.');
+    }
+});
+
+// --- Social Login Handling ---
+async function handleSocialLogin(type) {
+    const btn = document.getElementById(`${type}Btn`);
+    if (!btn) return;
+    
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = `<i class='bx bx-loader-alt bx-spin'></i> Syncing...`;
+    btn.disabled = true;
+
+    // Simulate OAuth Delay
+    await new Promise(r => setTimeout(r, 600));
+
+    const mockName = prompt(`Sign in with ${type.charAt(0).toUpperCase() + type.slice(1)}\n\nPlease enter your display name:`, "Social Explorer");
+    
+    if (!mockName) {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+        return;
+    }
+
+    const mockEmail = `${mockName.toLowerCase().replace(/\s/g, '')}@${type}.demo`;
+    const mockSocialId = `${type}_${Math.random().toString(36).substr(2, 9)}`;
+    const activeTab = document.querySelector('.role-tab.active');
+    const role = activeTab ? activeTab.getAttribute('data-role') : 'seeker';
+
+    const loginData = {
+        email: mockEmail,
+        name: mockName,
+        socialId: mockSocialId,
+        authType: type,
+        role: role
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/social-login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(loginData)
+        });
+
+        // Check if response is JSON
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            const result = await response.json();
+            if (result.success) {
+                sessionStorage.setItem('currentUser', JSON.stringify(result.data));
+                completeLogin(btn);
+                return;
+            }
+        }
+        
+        // If we reach here, server returned something else (like 404 or 500 HTML)
+        console.warn("Server response was not JSON, falling back to Demo Mode.");
+        throw new Error("Server offline");
+
+    } catch (error) {
+        console.log("Demo Mode Activated: Bypassing backend for visual testing.");
+        
+        // DEMO MODE: Create a local session so the UI still works
+        const demoUser = {
+            userId: "demo_" + Date.now(),
+            name: mockName,
+            email: mockEmail,
+            role: role
+        };
+        
+        sessionStorage.setItem('currentUser', JSON.stringify(demoUser));
+        
+        // Show a helpful hint that we're in demo mode
+        const hint = document.createElement('div');
+        hint.style = "position:fixed; bottom:20px; left:20px; background:rgba(0,0,0,0.8); color:white; padding:10px 20px; border-radius:10px; z-index:10000; font-size:0.8rem;";
+        hint.innerHTML = "✨ Demo Mode Active (Backend Offline)";
+        document.body.appendChild(hint);
+        
+        completeLogin(btn);
+    }
+}
+
+function completeLogin(btn) {
+    btn.innerHTML = `<i class='bx bx-check-circle'></i> Identity Verified`;
+    btn.style.background = "var(--success)";
+    btn.style.color = "white";
+    
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 1000);
+}
+
+document.getElementById('googleBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    handleSocialLogin('google');
+});
+
+document.getElementById('githubBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    handleSocialLogin('github');
+});

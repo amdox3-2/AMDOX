@@ -18,123 +18,148 @@
             </div>
             <h1 id="viewFullName">Job Seeker Name</h1>
             <p id="viewEmail">email@example.com</p>
+            
+            <!-- Real-time Status Bar -->
+            <div style="max-width: 300px; margin: 20px auto;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px;">
+                    <span>Profile Completion</span>
+                    <span id="completionText">85%</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden;">
+                    <div id="completionBar" style="width: 85%; height: 100%; background: linear-gradient(90deg, #6366f1, #a855f7); transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                </div>
+            </div>
+
             <div class="action-buttons">
                 <button class="edit-btn" onclick="toggleView('edit')">
-                    <i class='bx bxs-edit'></i> Edit Profile
+                    <i class='bx bxs-edit-alt'></i> Edit Profile
                 </button>
             </div>
         </div>
 
         <div class="profile-content">
             <div class="info-card scroll-reveal">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3><i class='bx bxs-lock-alt'></i> Account Credentials</h3>
-                    <a href="account-settings.html" class="edit-link"><i class='bx bx-edit-alt'></i> Edit</a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3><i class='bx bxs-badge-check'></i> Verified Credentials</h3>
+                    <a href="account-settings.html" class="download-link" style="border-radius: 8px; font-size: 0.8rem;">Change Password</a>
                 </div>
                 <div class="info-grid">
                     <div class="info-item">
-                        <label>Account Name</label>
+                        <label>Account Holder</label>
                         <p id="credName">Loading...</p>
                     </div>
                     <div class="info-item">
-                        <label>Login Email</label>
+                        <label>Primary Email</label>
                         <p id="credEmail">Loading...</p>
                     </div>
                 </div>
             </div>
+
             <div class="info-card scroll-reveal">
-                <h3><i class='bx bxs-contact'></i> Contact Information</h3>
+                <h3><i class='bx bxs-phone-call'></i> Contact Direct</h3>
                 <div class="info-grid">
                     <div class="info-item">
-                        <label>Phone</label>
+                        <label>Phone Number</label>
                         <p id="viewPhone">Not provided</p>
                     </div>
                     <div class="info-item">
-                        <label>Address</label>
+                        <label>Current Address</label>
                         <p id="viewAddress">Not provided</p>
                     </div>
                     <div class="info-item">
-                        <label>Date of Birth</label>
+                        <label>Birth Date</label>
                         <p id="viewDob">Not provided</p>
                     </div>
                 </div>
             </div>
 
             <div class="info-card scroll-reveal">
-                <h3><i class='bx bxs-briefcase'></i> Skills & Experience</h3>
-                <p id="viewSkills">No skills listed yet.</p>
+                <h3><i class='bx bxs-zap'></i> Professional Bio & Skills</h3>
+                <p id="viewSkills" style="line-height: 1.8; color: #475569;">No skills listed yet.</p>
             </div>
 
             <div class="info-card scroll-reveal" id="resumeSection">
-                <h3><i class='bx bxs-file-doc'></i> Resume</h3>
+                <h3><i class='bx bxs-file-pdf'></i> Attached Resume</h3>
                 <div class="resume-display">
-                    <i class='bx bxs-file-pdf'></i>
-                    <span id="viewResumeName">No resume uploaded</span>
-                    <a href="#" id="viewResumeLink" class="download-link" target="_blank" style="display: none;">View
-                        Resume</a>
+                    <i class='bx bxs-file-doc'></i>
+                    <div style="flex: 1;">
+                        <span id="viewResumeName" style="display: block; font-weight: 700;">No resume uploaded</span>
+                        <small style="color: var(--secondary);">Last updated: Just now</small>
+                    </div>
+                    <a href="#" id="viewResumeLink" class="download-link" target="_blank" style="display: none;">View File</a>
                 </div>
             </div>
         </div>
 
-        <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 20px;">
-            <a href="dashboard.html" style="color: #512da8; text-decoration: none; font-weight: 600;"><i
-                    class='bx bx-grid-alt'></i> Dashboard</a>
-            <a href="seekers-list.html" style="color: #2563eb; text-decoration: none; font-weight: 600;">View All Job
-                Seekers →</a>
+        <div style="text-align: center; margin-top: 40px; display: flex; justify-content: center; gap: 30px;">
+            <a href="dashboard.html" style="color: var(--primary); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                <i class='bx bxs-dashboard'></i> Dashboard
+            </a>
+            <a href="seekers-list.html" style="color: var(--secondary); text-decoration: none; font-weight: 700;">
+                All Talent Feed <i class='bx bx-right-arrow-alt'></i>
+            </a>
         </div>
     </div>
 
     <div class="profile-container" id="editView">
         <div class="profile-header">
-            <h1>Job Seeker Profile</h1>
-            <p>Update your personal information and resume</p>
-            <button class="view-btn" id="backToView" style="display: none;" onclick="toggleView('view')">
-                <i class='bx bxs-user'></i> Back to Profile
-            </button>
+            <h1 style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Account Builder</h1>
+            <p>Refine your professional identity for top employers</p>
+            <div style="margin-top: 20px;">
+                <button class="view-btn" id="backToView" style="display: none; margin: 0 auto;" onclick="toggleView('view')">
+                    <i class='bx bxs-arrow-back'></i> Return to Profile
+                </button>
+            </div>
         </div>
-        <form>
-            <div class="input-group">
-                <label>Full Name</label>
-                <input type="text" placeholder="Enter your full name" required>
+        <form style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="input-group" style="grid-column: span 2;">
+                <label>Full Professional Name</label>
+                <input type="text" id="fullName" placeholder="e.g. Rohith Surapaneni" required>
             </div>
             <div class="input-group">
-                <label>Email Address</label>
-                <input type="email" placeholder="Enter your email" required>
+                <label>Contact Email</label>
+                <input type="email" id="email" placeholder="you@example.com" required>
             </div>
             <div class="input-group">
                 <label>Phone Number</label>
-                <input type="tel" placeholder="Enter your phone number">
+                <input type="tel" id="phoneNumber" placeholder="+91 98765 43210">
             </div>
             <div class="input-group">
                 <label>Date of Birth</label>
-                <input type="date">
+                <input type="date" id="dob">
             </div>
             <div class="input-group">
-                <label>Address</label>
-                <input type="text" placeholder="Enter your address">
+                <label>City & Country</label>
+                <input type="text" id="address" placeholder="e.g. Hyderabad, India">
             </div>
-            <div class="input-group">
-                <label>Upload Resume (PDF/DOCX)</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input type="file" id="resumeInput" accept=".pdf,.doc,.docx" style="flex: 1;">
-                    <button type="button" id="extractBtn" class="primary-btn-sm"
-                        style="white-space: nowrap; padding: 12px 20px;">
-                        <i class='bx bx-wand'></i> Auto-fill
+            <div class="input-group" style="grid-column: span 2;">
+                <label>Upload & Analyze Resume</label>
+                <div style="display: flex; gap: 15px; align-items: stretch;">
+                    <div style="flex: 1; position: relative;">
+                        <input type="file" id="resumeInput" accept=".pdf,.doc,.docx" style="opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer; z-index: 2;">
+                        <div style="background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 12px; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--secondary);">
+                            <i class='bx bx-upload' style="margin-right: 8px; font-size: 1.2rem;"></i> Browse or Drop File
+                        </div>
+                    </div>
+                    <button type="button" id="extractBtn" class="primary-btn-sm" style="border-radius: 16px; min-width: 140px;">
+                        <i class='bx bx-broadcast'></i> Sync Data
                     </button>
                 </div>
-                <p id="extractStatus" style="font-size: 0.8rem; margin-top: 5px; color: var(--secondary);"></p>
+                <p id="extractStatus" style="font-size: 0.8rem; margin-top: 8px; font-weight: 600;"></p>
             </div>
-            <div class="input-group">
-                <label>Skills & Bio</label>
-                <textarea rows="4" placeholder="Briefly describe your skills and experience..."></textarea>
+            <div class="input-group" style="grid-column: span 2;">
+                <label>Key Skills & Vision</label>
+                <textarea id="skills" rows="4" placeholder="Briefly highlight your expertise and what you're looking for..."></textarea>
             </div>
-            <button type="submit" class="primary-btn">Save Profile</button>
+            <div style="grid-column: span 2; margin-top: 10px;">
+                <button type="submit" class="primary-btn">Synchronize Profile</button>
+            </div>
         </form>
-        <div style="text-align: center; margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
-            <a href="dashboard.html" style="color: #512da8; text-decoration: none; font-weight: 600;"><i
-                    class='bx bx-grid-alt'></i> Dashboard</a>
-            <a href="seekers-list.html" style="color: #2563eb; text-decoration: none; font-weight: 600;">View All Job
-                Seekers →</a>
+        <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 30px;">
+            <a href="dashboard.html" style="color: var(--primary); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                <i class='bx bx-grid-alt'></i> Portal Home
+            </a>
+            <a href="seekers-list.html" style="color: var(--secondary); text-decoration: none; font-weight: 700;">Discover Peers →</a>
         </div>
     </div>
     <script src="seeker-profile.js"></script>

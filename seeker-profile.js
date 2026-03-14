@@ -19,29 +19,47 @@ async function loadProfile() {
       const profile = result.data[0];
 
       // Populate form
-      const form = document.querySelector('form');
-      form.querySelector('input[placeholder="Enter your full name"]').value = profile.fullName || '';
-      form.querySelector('input[placeholder="Enter your email"]').value = profile.email || '';
-      form.querySelector('input[placeholder="Enter your phone number"]').value = profile.phone || '';
+      document.getElementById('fullName').value = profile.fullName || '';
+      document.getElementById('email').value = profile.email || '';
+      document.getElementById('phoneNumber').value = profile.phone || '';
       if (profile.dateOfBirth) {
         const date = new Date(profile.dateOfBirth);
         if (!isNaN(date.getTime())) {
-          form.querySelector('input[type="date"]').value = date.toISOString().split('T')[0];
+          document.getElementById('dob').value = date.toISOString().split('T')[0];
         }
       }
-      form.querySelector('input[placeholder="Enter your address"]').value = profile.address || '';
-      form.querySelector('textarea').value = profile.skills || '';
+      document.getElementById('address').value = profile.address || '';
+      document.getElementById('skills').value = profile.skills || '';
 
       // Populate View Mode
       displayViewProfile(profile);
+      updateCompletionBar(profile);
 
       // Switch to View Mode by default
       toggleView('view');
       document.getElementById('backToView').style.display = 'block';
+    } else {
+        // New profile - default to edit mode
+        toggleView('edit');
+        document.getElementById('fullName').value = currentUser.name || '';
+        document.getElementById('email').value = currentUser.email || '';
     }
   } catch (error) {
     console.error('Error loading profile:', error);
   }
+}
+
+function updateCompletionBar(profile) {
+    let fields = ['fullName', 'email', 'phone', 'address', 'skills', 'resumePath'];
+    let filled = fields.filter(f => profile[f] && profile[f].length > 0).length;
+    let percentage = Math.round((filled / fields.length) * 100);
+    
+    const bar = document.getElementById('completionBar');
+    const text = document.getElementById('completionText');
+    if (bar && text) {
+        bar.style.width = percentage + '%';
+        text.textContent = percentage + '%';
+    }
 }
 
 function displayViewProfile(profile) {
@@ -144,12 +162,12 @@ document.querySelector('form').addEventListener('submit', async function (e) {
 
   const formData = {
     userId: currentUser.userId,
-    fullName: this.querySelector('input[placeholder="Enter your full name"]').value,
-    email: this.querySelector('input[placeholder="Enter your email"]').value,
-    phone: this.querySelector('input[placeholder="Enter your phone number"]').value,
-    dateOfBirth: this.querySelector('input[type="date"]').value,
-    address: this.querySelector('input[placeholder="Enter your address"]').value,
-    skills: this.querySelector('textarea').value,
+    fullName: document.getElementById('fullName').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phoneNumber').value,
+    dateOfBirth: document.getElementById('dob').value,
+    address: document.getElementById('address').value,
+    skills: document.getElementById('skills').value,
     resumePath: resumePath,
     resumeFileName: resumeFileName
   };
@@ -208,28 +226,15 @@ document.addEventListener('DOMContentLoaded', () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       // Mock data extraction
-      const fileName = file.name.toLowerCase();
       let extractedName = currentUser.name || "User Name";
 
-      // Try to get name from filename if possible
-      if (fileName.includes('_')) {
-        const parts = file.name.split('_');
-        if (parts.length > 0) extractedName = parts[0];
-      } else if (fileName.includes('-')) {
-        const parts = file.name.split('-');
-        if (parts.length > 0) extractedName = parts[0];
-      }
-
       // Fill form
-      const form = document.querySelector('form');
-      if (form) {
-        form.querySelector('input[placeholder="Enter your full name"]').value = extractedName;
-        form.querySelector('input[placeholder="Enter your email"]').value = currentUser.email || "";
+      document.getElementById('fullName').value = extractedName;
+      document.getElementById('email').value = currentUser.email || "";
 
-        // Add some mock skills based on common tech resumes
-        const mockBio = "Highly motivated professional with experience in software development and project management. Skilled in problem-solving and collaborating with cross-functional teams to deliver high-quality solutions.";
-        form.querySelector('textarea').value = "Skills: JavaScript, HTML, CSS, Node.js, React, MongoDB\n\nBio: " + mockBio;
-      }
+      // Add some mock skills based on common tech resumes
+      const mockBio = "Highly motivated professional with experience in software development and project management. Skilled in problem-solving and collaborating with cross-functional teams to deliver high-quality solutions.";
+      document.getElementById('skills').value = "Skills: JavaScript, HTML, CSS, Node.js, React, MongoDB\n\nBio: " + mockBio;
 
       extractBtn.disabled = false;
       extractBtn.innerHTML = "<i class='bx bx-check'></i> Fill Successful";

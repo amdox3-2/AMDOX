@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMDOX | Opportunity Insights</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .details-wrapper {
+            padding: 40px 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .back-nav {
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+            transform: translateX(-5px);
+        }
+
+        .details-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .details-header {
+            padding: 60px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.05));
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+        }
+
+        .details-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .company-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 30px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--secondary);
+        }
+
+        .meta-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .meta-item div span {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            opacity: 0.7;
+        }
+
+        .meta-item div p {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .details-body {
+            padding: 60px;
+            display: grid;
+            gap: 50px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .content-box {
+            line-height: 1.8;
+            color: #475569;
+            font-size: 1.1rem;
+            white-space: pre-line;
+        }
+
+        .floating-action {
+            position: sticky;
+            bottom: 40px;
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .apply-card {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            border: 1px solid #f1f5f9;
+        }
+
+        #loadingState {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            gap: 20px;
+            color: var(--secondary);
+        }
+
+        .spinner {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+            color: var(--primary);
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .details-header, .details-body { padding: 30px; }
+            .details-header h1 { font-size: 2rem; }
+            .apply-card { flex-direction: column; width: 100%; text-align: center; gap: 20px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="details-wrapper">
+        <nav class="back-nav">
+            <a href="dashboard.html" class="back-link">
+                <i class='bx bx-left-arrow-alt'></i> Return to Opportunities
+            </a>
+        </nav>
+
+        <div id="loadingState">
+            <i class='bx bx-loader-alt spinner'></i>
+            <h3>Retrieving Opportunity Details...</h3>
+        </div>
+
+        <div id="jobDetails" style="display: none;">
+            <div class="details-container">
+                <div class="details-header">
+                    <div class="company-badge">
+                        <i class='bx bxs-business'></i>
+                        <span id="companyName">Global Innovation Corp</span>
+                    </div>
+                    <h1 id="jobTitle">Senior Software Engineer</h1>
+                    
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <i class='bx bx-map-pin'></i>
+                            <div>
+                                <span>Location</span>
+                                <p id="location">Remote / Hybrid</p>
+                            </div>
+                        </div>
+                        <div class="meta-item">
+                            <i class='bx bx-briefcase-alt-2'></i>
+                            <div>
+                                <span>Engagement</span>
+                                <p id="jobType">Full-time</p>
+                            </div>
+                        </div>
+                        <div class="meta-item">
+                            <i class='bx bx-wallet'></i>
+                            <div>
+                                <span>Compensation</span>
+                                <p id="salaryRange">Competitive</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-body">
+                    <section>
+                        <h3 class="section-title"><i class='bx bx-align-left'></i> Core Mission</h3>
+                        <div class="content-box" id="description">Target job description will appear here...</div>
+                    </section>
+
+                    <section>
+                        <h3 class="section-title"><i class='bx bx-list-check'></i> Required Expertise</h3>
+                        <div class="content-box" id="qualifications">Essential skills and background details...</div>
+                    </section>
+
+                    <section>
+                        <h3 class="section-title"><i class='bx bx-target-lock'></i> Key Impact</h3>
+                        <div class="content-box" id="responsibilities">Primary responsibilities and goals...</div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="floating-action" id="actionArea">
+                <div class="apply-card">
+                    <div>
+                        <h4 style="font-weight: 800; color: #0f172a;">Interested in this role?</h4>
+                        <p style="color: var(--secondary); font-size: 0.9rem;">Submit your application to start the journey.</p>
+                    </div>
+                    <button class="primary-btn" id="applyBtn" style="min-width: 200px;">
+                        <i class='bx bx-paper-plane'></i> Apply Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="job-details.js"></script>
+</body>
+
+</html>

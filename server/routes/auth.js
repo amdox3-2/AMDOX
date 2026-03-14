@@ -89,5 +89,45 @@ router.put('/update-profile', async (req, res) => {
   }
 });
 
+// Social Login/Register
+router.post('/social-login', async (req, res) => {
+  try {
+    const { email, name, socialId, authType, role } = req.body;
+
+    // Check if user exists by socialId
+    let user = await User.findOne({ socialId });
+
+    if (!user) {
+      // Check if user exists by email (link accounts)
+      user = await User.findOne({ email });
+      
+      if (user) {
+        // Link social ID to existing account
+        user.socialId = socialId;
+        user.authType = authType;
+        await user.save();
+      } else {
+        // Create new user for social login
+        user = new User({
+          email,
+          name,
+          socialId,
+          authType,
+          role: role || 'seeker'
+        });
+        await user.save();
+      }
+    }
+
+    res.json({
+      success: true,
+      message: 'Social login successful',
+      data: { userId: user._id, email: user.email, role: user.role, name: user.name }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 module.exports = router;
 
