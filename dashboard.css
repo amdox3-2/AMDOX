@@ -336,7 +336,20 @@ body {
     color: var(--secondary);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.info-divider {
+    color: var(--border-color);
+    margin: 0 4px;
 }
 
 .job-main-info i {

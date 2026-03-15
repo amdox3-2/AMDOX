@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://127.0.0.1:3000/api';
+const API_BASE_URL = window.APP_CONFIG.API_BASE_URL;
 
 // Get current user from sessionStorage
 const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
@@ -365,11 +365,21 @@ function displayJobsList(jobs, container, showActions = false) {
         return;
     }
 
-    container.innerHTML = jobs.map(job => `
+    container.innerHTML = jobs.map(job => {
+        // Avoid redundant "Remote • Remote"
+        const isBothRemote = job.location.toLowerCase().includes('remote') && job.jobType.toLowerCase().includes('remote');
+        
+        const infoHtml = isBothRemote 
+            ? `<span class="info-item"><i class='bx bx-map'></i> Remote</span>`
+            : `<span class="info-item"><i class='bx bx-map'></i> ${job.location}</span>
+               <span class="info-divider">•</span>
+               <span class="info-item"><i class='bx bx-time'></i> ${job.jobType}</span>`;
+
+        return `
         <div class="job-card-row">
             <div class="job-main-info">
                 <h4>${job.title}</h4>
-                <p><i class='bx bx-map'></i> ${job.location} • <i class='bx bx-time'></i> ${job.jobType}</p>
+                <p>${infoHtml}</p>
                 <p class="salary">${job.salaryRange}</p>
             </div>
             <div class="job-actions">
@@ -381,7 +391,7 @@ function displayJobsList(jobs, container, showActions = false) {
                 `}
             </div>
         </div>
-    `).join('');
+    `}).join('');
 }
 
 function viewJobDetails(jobId) {

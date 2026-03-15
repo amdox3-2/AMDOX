@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://127.0.0.1:3000/api';
+const API_BASE_URL = window.APP_CONFIG.API_BASE_URL;
 
 const employersGrid = document.getElementById('employersGrid');
 const loading = document.getElementById('loading');
